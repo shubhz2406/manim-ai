@@ -1,0 +1,14 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+psycopg[binary]
+alembic
+celery[redis]
+python-dotenv
+pydantic
+minio
+requests
+boto3
+botocore
+# manim
+Pillow

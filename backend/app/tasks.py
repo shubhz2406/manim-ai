@@ -5,7 +5,12 @@ from .storage import s3, BUCKET_NAME
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from .models.scene import Scene
+import os
+from dotenv import load_dotenv
 
+import logging
+logger = logging.getLogger(__name__)
+load_dotenv()
 
 OUTPUT_DIR = Path("renders")
 OUTPUT_DIR.mkdir(exist_ok=True)
@@ -13,14 +18,20 @@ OUTPUT_DIR.mkdir(exist_ok=True)
 # broker and backend using redis
 celery = Celery(
     "worker",
-    broker="redis://localhost:6379/0",  
-    backend="redis://localhost:6379/0",   
+    broker = "redis://localhost:6379/0",
+    backend = "redis://localhost:6379/0",
+    # broker=os.getenv("REDIS_URL"),
+    # backend=os.getenv("REDIS_URL"),
 )
 
 #connecting to postgres database for scene data updation
-SQLALCHEMY_DATABASE_URL = "postgresql+psycopg://shubh:secret@localhost:5432/manimai-db"
+
+SQLALCHEMY_DATABASE_URL = "postgresql+psycopg2://shubh:secret@localhost:5432/manimai-db"
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+from .models import Base
+Base.metadata.create_all(bind=engine)
 
 @celery.task
 def render_scene(scene_id: int, code: str):
@@ -63,6 +74,30 @@ def render_scene(scene_id: int, code: str):
         db.commit()
     db.close()
 
+    # db = SessionLocal()
+    # try:
+    #     scene = db.query(Scene).filter(Scene.id == scene_id).first()
+    #     if scene:
+    #         scene.status = "done"
+    #         db.commit()
+    # except Exception as e:
+    #     print(f"DB error: {e}")
+    #     db.rollback()
+    # finally:
+    #     db.close()
+# ...
+    # db = SessionLocal()
+    # scene = db.query(Scene).filter(Scene.id == scene_id).first()
+    # logger.info(f"Fetched scene: {scene}")
+    # if scene:
+    #     scene.video_url = video_url
+    #     scene.status = "done"
+    #     scene.code = code
+    #     db.commit()
+    #     logger.info(f"Updated scene {scene_id} → committed to DB")
+    # else:
+    #     logger.warning(f"No scene found for ID {scene_id}")
+    # db.close()
 
     # delete folder scene_id inside renders/media/videos directory delete even if not empty and no error if not exists
     import shutil

@@ -6,9 +6,9 @@ from .models.user import User
 from .models.project import Project
 from .models.scene import Scene
 
-# Base.metadata.create_all(bind=engine)
+# # Base.metadata.create_all(bind=engine)
 
-# dummy user code
+# # dummy user code
 # db = SessionLocal()
 # user = User(email="user@example.com", name="John Doe", hashed_password="hashedpassword", projects=[], render_count=0)
 # db.add(user)
