@@ -1,8 +1,12 @@
 .env
-backend/Dockerfile
-backend/app/alembic/
-backend/app/alembic.ini
-backend/requirements.txt
 .env.docker
 # ignore __pycache__ folders
-**/__pycache__/** 
+**/__pycache__/**
+#ignore requirements.txt file in backend
+backend/requirements.txt
+# ignore alembic.ini file in backend/app
+backend/app/alembic.ini
+# ignore alembic folder in backend/app
+backend/app/alembic/**
+# dockerFile in backend
+backend/Dockerfile
