@@ -1,12 +1,12 @@
+# Environment files
 .env
 .env.docker
-# ignore __pycache__ folders
-**/__pycache__/**
-#ignore requirements.txt file in backend
+
+# Python cache folders
+**/__pycache__/
+
+# Backend-specific ignores
 backend/requirements.txt
-# ignore alembic.ini file in backend/app
 backend/app/alembic.ini
-# ignore alembic folder in backend/app
-backend/app/alembic/**
-# dockerFile in backend
+backend/app/alembic/
 backend/Dockerfile
