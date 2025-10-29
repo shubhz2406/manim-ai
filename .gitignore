@@ -10,3 +10,4 @@ backend/requirements.txt
 backend/app/alembic.ini
 backend/app/alembic/
 backend/Dockerfile
+backend/.dockerignore
