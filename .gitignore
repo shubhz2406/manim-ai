@@ -6,7 +6,6 @@
 **/__pycache__/
 
 # Backend-specific ignores
-backend/requirements.txt
 backend/app/alembic.ini
 backend/app/alembic/
 backend/Dockerfile
