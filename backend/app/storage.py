@@ -2,6 +2,7 @@ import boto3
 import os
 from dotenv import load_dotenv  
 load_dotenv()
+# load_dotenv(dotenv_path=".env.local")
 
 s3 = boto3.client(
     "s3",

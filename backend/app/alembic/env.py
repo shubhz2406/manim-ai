@@ -14,15 +14,17 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-import sys, os
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))  
-from app.database import Base
-import app.models  # noqa: F401
-
 # add your model's MetaData object here
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
+import os
+import sys
+
+# Add the parent directory of 'app' to sys.path so Alembic can find your app package
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from app.models import user, project, scene  # import all models to register them with SQLAlchemy
+from app.database import Base  # adjust if Base is defined somewhere else (like app.models.base)
 target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
