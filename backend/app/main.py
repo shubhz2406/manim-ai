@@ -1,19 +1,18 @@
 from fastapi import FastAPI
 from .tasks import render_scene
 from pydantic import BaseModel
-from .database import Base, engine, SessionLocal
-from .models.user import User
-from .models.project import Project
-from .models.scene import Scene
+from .routers import scenc as scene_router
 
 app = FastAPI()
 
 @app.get("/")
-def read_root():
+async def read_root():
     return {"Hello": "World"}
 
 class RenderRequest(BaseModel):
     code: str
+
+app.include_router(scene_router.router)
 
 @app.post("/render/{scene_id}")
 def create_render(scene_id: int, request: RenderRequest):
@@ -25,3 +24,6 @@ def get_status(task_id: str):
     from .tasks import celery
     result = celery.AsyncResult(task_id)
     return {"task_id": task_id, "status": result.status, "result": result.result}
+
+
+
